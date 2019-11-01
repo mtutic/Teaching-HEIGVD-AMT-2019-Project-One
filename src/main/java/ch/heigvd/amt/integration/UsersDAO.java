@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class UsersDAO implements IUsersDAO {
 
-    @Resource(lookup = "jdbc/")
+    @Resource(lookup = "jdbc/movie_history")
     private DataSource dataSource;
 
     @Override

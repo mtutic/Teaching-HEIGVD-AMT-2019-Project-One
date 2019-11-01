@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 @Stateless
 public class MoviesDAO implements IMoviesDAO {
 
-    @Resource(lookup = "jdbc/")
+    @Resource(lookup = "jdbc/movie_history")
     private DataSource dataSource;
 
     @Override
@@ -26,7 +26,8 @@ public class MoviesDAO implements IMoviesDAO {
 
         try {
             Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM movie");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM " +
+                    "Movie LIMIT 10");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 long id = resultSet.getLong("idMovie");
@@ -39,6 +40,7 @@ public class MoviesDAO implements IMoviesDAO {
 
         } catch (SQLException ex) {
             Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Error(ex);
         }
     }
 
