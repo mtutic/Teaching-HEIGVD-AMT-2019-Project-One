@@ -11,15 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "HomeServlet", urlPatterns = "")
-public class HomeServlet extends HttpServlet {
+@WebServlet(name = "TestServlet", urlPatterns = "/test")
+public class TestServlet extends HttpServlet {
+
     @EJB
     private IMoviesDAO moviesManager;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
-        req.setAttribute("movies", moviesManager.findSeenMovie(new User(1, "as", "as", "as", "as")));
-        req.getRequestDispatcher("index.jsp").forward(req, resp);
+        req.setAttribute("movies", moviesManager.findByTitle("pocalypse"));
+        req.getRequestDispatcher("/WEB-INF/pages/movies.jsp").forward(req, resp);
     }
 }
