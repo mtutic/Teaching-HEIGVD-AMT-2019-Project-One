@@ -43,8 +43,8 @@
       <div class="header-mobile__bar">
         <div class="container-fluid">
           <div class="header-mobile-inner">
-            <a class="logo" href="index.jsp">
-              <img src="assets/images/icon/logo.png" alt="CoolAdmin" />
+            <a class="logo" href="../../index.jsp">
+              <img src="../../assets/images/icon/logo.png" alt="CoolAdmin" />
             </a>
             <button class="hamburger hamburger--slider" type="button">
               <span class="hamburger-box">
@@ -79,18 +79,18 @@
     <aside class="menu-sidebar d-none d-lg-block">
       <div class="logo">
         <a href="#">
-          <img src="assets/images/icon/logo.png" alt="Cool Admin" />
+          <img src="../../assets/images/icon/logo.png" alt="Cool Admin" />
         </a>
       </div>
       <div class="menu-sidebar__content js-scrollbar1">
         <nav class="navbar-sidebar">
           <ul class="list-unstyled navbar__list">
-            <li class="active has-sub">
-              <a class="js-arrow" href="#">
+            <li>
+              <a href="/project-one/">
                 <i class="fas fa-home"></i>Movies you seen</a>
             </li>
-            <li>
-              <a href="/project-one/movies">
+            <li class="active has-sub">
+              <a class="js-arrow" href="#">
                 <i class="fas fa-video"></i>All movies</a>
             </li>
             <li>
@@ -116,7 +116,7 @@
                 <div class="account-wrap">
                   <div class="account-item clearfix js-item-menu">
                     <div class="image">
-                      <img src="assets/images/icon/avatar-01.jpg" alt="John Doe" />
+                      <img src="../../assets/images/icon/avatar-01.jpg" alt="John Doe" />
                     </div>
                     <div class="content">
                       <a class="js-acc-btn" href="#">john doe</a>
@@ -125,7 +125,7 @@
                       <div class="info clearfix">
                         <div class="image">
                           <a href="#">
-                            <img src="assets/images/icon/avatar-01.jpg" alt="John Doe" />
+                            <img src="../../assets/images/icon/avatar-01.jpg" alt="John Doe" />
                           </a>
                         </div>
                         <div class="content">
@@ -155,7 +155,7 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-12">
-                <h2 class="title-1 m-b-25">Movies you seen</h2>
+                <h2 class="title-1 m-b-25">All movies</h2>
                 <div class="table-responsive table--no-card m-b-40">
                   <table class="table table-borderless table-striped table-earning">
                     <thead>
