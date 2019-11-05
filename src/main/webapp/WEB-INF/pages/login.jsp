@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,6 +42,14 @@
     <div class="page-content--bge5">
       <div class="container">
         <div class="login-wrap">
+          <c:if test="${not empty error}">
+            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                ${error}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </c:if>
           <div class="login-content">
             <div class="login-logo">
               <a href="#">
