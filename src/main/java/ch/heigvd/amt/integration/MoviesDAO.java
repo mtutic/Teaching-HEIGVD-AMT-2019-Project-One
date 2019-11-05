@@ -26,8 +26,7 @@ public class MoviesDAO implements IMoviesDAO {
 
         try {
             Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM " +
-                    "Movie LIMIT 10");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Movie LIMIT 10");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 long id = resultSet.getLong("idMovie");
@@ -48,7 +47,7 @@ public class MoviesDAO implements IMoviesDAO {
     public Movie create(Movie movie) {
         try {
             Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO movie (Title, Year ) VALUES (?,?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Movie (Title, Year) VALUES (?,?)");
 
             preparedStatement.setString(1, movie.getTitle());
             preparedStatement.setInt(2, movie.getYear());
@@ -68,7 +67,7 @@ public class MoviesDAO implements IMoviesDAO {
     public Movie findById(String id) {
         try {
             Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM movie WHERE idMovie = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Movie WHERE idMovie = ?");
 
             preparedStatement.setString(1, id);
 
@@ -91,7 +90,8 @@ public class MoviesDAO implements IMoviesDAO {
     public void update(Movie movie) {
         try {
             Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE movie SET title=?, year=? WHERE idMovie = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Movie " +
+                    "SET Title=?, Year=? WHERE idMovie = ?");
 
             preparedStatement.setString(1, movie.getTitle());
             preparedStatement.setInt(2, movie.getYear());
@@ -111,7 +111,7 @@ public class MoviesDAO implements IMoviesDAO {
     public void deleteById(String id) {
         try {
             Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM movie WHERE idMovie = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Movie WHERE idMovie = ?");
 
             preparedStatement.setString(1, id);
 
