@@ -3,6 +3,7 @@ package ch.heigvd.amt.integration;
 import ch.heigvd.amt.model.User;
 
 import javax.annotation.Resource;
+import javax.ejb.Stateless;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Stateless
 public class UsersDAO implements IUsersDAO {
 
     @Resource(lookup = "jdbc/movie_history")
@@ -20,7 +22,7 @@ public class UsersDAO implements IUsersDAO {
     public User create(User user) {
         try {
             Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user (lastname, firstname, email, password ) VALUES (?, ?, ?, ?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO User (Lastname, Firstname, Email, Password ) VALUES (?, ?, ?, ?)");
 
             preparedStatement.setString(1, user.getLastName());
             preparedStatement.setString(2, user.getFirstName());
@@ -39,12 +41,12 @@ public class UsersDAO implements IUsersDAO {
     }
 
     @Override
-    public User findById(String email) {
+    public User findById(String idUser) {
         try {
             Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE email = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM User WHERE idUser = ?");
 
-            preparedStatement.setString(1, email);
+            preparedStatement.setString(1, idUser);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (!resultSet.next()) {
@@ -62,10 +64,34 @@ public class UsersDAO implements IUsersDAO {
     }
 
     @Override
+    public User findByEmail(String email) {
+        User user = null;
+
+        try {
+            Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM User WHERE Email = ?");
+            preparedStatement.setString(1, email);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                user = new User(resultSet.getLong(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4), resultSet.getString(5));
+            }
+
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Error(ex);
+        }
+
+        return user;
+    }
+
+    @Override
     public void update(User user) {
         try {
             Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE user SET lastname=?, firstname=?, email=?, password=? WHERE email = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE User SET Lastname=?, Firstname=?, Email=?, Password=? WHERE Email = ?");
 
             preparedStatement.setString(1, user.getLastName());
             preparedStatement.setString(2, user.getFirstName());
@@ -87,7 +113,7 @@ public class UsersDAO implements IUsersDAO {
     public void deleteById(String email) {
         try {
             Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM user WHERE email = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM User WHERE Email = ?");
 
             preparedStatement.setString(1, email);
 
