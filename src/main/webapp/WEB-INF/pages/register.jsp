@@ -1,5 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +10,7 @@
   <meta name="keywords" content="au theme template">
 
   <!-- Title Page-->
-  <title>Login</title>
+  <title>Register</title>
 
   <!-- Fontfaces CSS-->
   <link href="assets/css/font-face.css" rel="stylesheet" media="all">
@@ -42,14 +40,6 @@
     <div class="page-content--bge5">
       <div class="container">
         <div class="login-wrap">
-          <c:if test="${not empty error}">
-            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                ${error}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          </c:if>
           <div class="login-content">
             <div class="login-logo">
               <a href="#">
@@ -58,6 +48,20 @@
             </div>
             <div class="login-form">
               <form action="" method="post">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Lastname</label>
+                      <input class="au-input au-input--full" type="text" name="lastname" placeholder="Lastname">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Firstname</label>
+                      <input class="au-input au-input--full" type="text" name="firstname" placeholder="Firstname">
+                    </div>
+                  </div>
+                </div>
                 <div class="form-group">
                   <label>Email Address</label>
                   <input class="au-input au-input--full" type="email" name="email" placeholder="Email">
@@ -66,12 +70,12 @@
                   <label>Password</label>
                   <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
                 </div>
-                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">sign in</button>
+                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">register</button>
               </form>
               <div class="register-link">
                 <p>
-                  Don't you have account?
-                  <a href="<%=request.getContextPath() + "/register"%>">Sign Up Here</a>
+                  Already have account?
+                  <a href="<%=request.getContextPath() + "/login"%>">Sign In</a>
                 </p>
               </div>
             </div>
@@ -79,6 +83,7 @@
         </div>
       </div>
     </div>
+
   </div>
 
   <!-- Jquery JS-->
@@ -104,6 +109,7 @@
 
   <!-- Main JS-->
   <script src="assets/js/main.js"></script>
+
 </body>
 
 </html>
