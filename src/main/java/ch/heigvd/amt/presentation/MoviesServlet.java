@@ -1,6 +1,7 @@
 package ch.heigvd.amt.presentation;
 
 import ch.heigvd.amt.integration.IMoviesDAO;
+import ch.heigvd.amt.model.User;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -19,7 +20,9 @@ public class MoviesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
+        User connectedUser = (User) req.getSession().getAttribute("user");
         req.setAttribute("movies", moviesManager.findAllMovies());
+        req.setAttribute("user", connectedUser);
         req.getRequestDispatcher("/WEB-INF/pages/movies.jsp").forward(req, resp);
     }
 }

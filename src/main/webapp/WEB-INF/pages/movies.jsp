@@ -43,8 +43,8 @@
       <div class="header-mobile__bar">
         <div class="container-fluid">
           <div class="header-mobile-inner">
-            <a class="logo" href="../../index.jsp">
-              <img src="../../assets/images/icon/logo.png" alt="CoolAdmin" />
+            <a class="logo" href="index.jsp">
+              <img src="assets/images/icon/logo.png" alt="CoolAdmin" />
             </a>
             <button class="hamburger hamburger--slider" type="button">
               <span class="hamburger-box">
@@ -79,7 +79,7 @@
     <aside class="menu-sidebar d-none d-lg-block">
       <div class="logo">
         <a href="#">
-          <img src="../../assets/images/icon/logo.png" alt="Cool Admin" />
+          <img src="assets/images/icon/logo.png" alt="Cool Admin" />
         </a>
       </div>
       <div class="menu-sidebar__content js-scrollbar1">
@@ -116,23 +116,23 @@
                 <div class="account-wrap">
                   <div class="account-item clearfix js-item-menu">
                     <div class="image">
-                      <img src="../../assets/images/icon/avatar-01.jpg" alt="John Doe" />
+                      <img src="assets/images/icon/avatar.png" alt="${user.firstName}" />
                     </div>
                     <div class="content">
-                      <a class="js-acc-btn" href="#">john doe</a>
+                      <a class="js-acc-btn" href="#">${user.name()}</a>
                     </div>
                     <div class="account-dropdown js-dropdown">
                       <div class="info clearfix">
                         <div class="image">
                           <a href="#">
-                            <img src="../../assets/images/icon/avatar-01.jpg" alt="John Doe" />
+                            <img src="assets/images/icon/avatar.png" alt="${user.firstName}" />
                           </a>
                         </div>
                         <div class="content">
                           <h5 class="name">
-                            <a href="#">john doe</a>
+                            <a href="#">${user.name()}</a>
                           </h5>
-                          <span class="email">johndoe@example.com</span>
+                          <span class="email">${user.email}</span>
                         </div>
                       </div>
                       <div class="account-dropdown__footer">

@@ -19,7 +19,9 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
-        req.setAttribute("movies", moviesManager.findSeenMovie(new User(1, "as", "as", "as", "as")));
+        User connectedUser = (User) req.getSession().getAttribute("user");
+        req.setAttribute("movies", moviesManager.findSeenMovie(connectedUser));
+        req.setAttribute("user", connectedUser);
         req.getRequestDispatcher("index.jsp").forward(req, resp);
     }
 }
