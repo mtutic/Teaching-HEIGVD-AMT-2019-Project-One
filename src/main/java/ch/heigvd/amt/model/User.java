@@ -24,4 +24,8 @@ public class User {
         this.password = password;
     }
 
+    public String name() {
+        return firstName + ' ' + lastName;
+    }
+
 }

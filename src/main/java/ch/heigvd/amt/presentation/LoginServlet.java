@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
         if (usr != null) {
             if (usr.getPassword().equals(password)) {
                 // Save the user id in the session
-                req.getSession().setAttribute("user", usr.getId());
+                req.getSession().setAttribute("user", usr);
                 resp.sendRedirect(req.getContextPath() + "/");
                 return;
             } else {
