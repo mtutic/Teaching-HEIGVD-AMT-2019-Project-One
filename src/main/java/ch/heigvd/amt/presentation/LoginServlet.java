@@ -1,5 +1,6 @@
 package ch.heigvd.amt.presentation;
 
+import ch.heigvd.amt.datastore.exceptions.KeyNotFoundException;
 import ch.heigvd.amt.integration.IUsersDAO;
 import ch.heigvd.amt.model.User;
 
@@ -28,9 +29,8 @@ public class LoginServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         // Check if the user exists in the database
-        User usr = usersManager.findByEmail(email);
-
-        if (usr != null) {
+        try {
+            User usr = usersManager.findByEmail(email);
             if (usr.getPassword().equals(password)) {
                 // Save the user id in the session
                 req.getSession().setAttribute("user", usr);
@@ -40,7 +40,7 @@ public class LoginServlet extends HttpServlet {
                 // The password for the given email is wrong
                 req.setAttribute("error", "Wrong password !");
             }
-        } else {
+        } catch (KeyNotFoundException e) {
             // The email doesn't exist
             req.setAttribute("error", "Wrong user email !");
         }

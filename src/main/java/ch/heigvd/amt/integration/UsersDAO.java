@@ -1,5 +1,6 @@
 package ch.heigvd.amt.integration;
 
+import ch.heigvd.amt.datastore.exceptions.KeyNotFoundException;
 import ch.heigvd.amt.model.User;
 
 import javax.annotation.Resource;
@@ -20,110 +21,134 @@ public class UsersDAO implements IUsersDAO {
 
     @Override
     public User create(User user) {
+        Connection con = null;
         try {
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO User (Lastname, Firstname, Email, Password ) VALUES (?, ?, ?, ?)");
+            con = dataSource.getConnection();
 
-            preparedStatement.setString(1, user.getLastName());
-            preparedStatement.setString(2, user.getFirstName());
-            preparedStatement.setString(3, user.getEmail());
-            preparedStatement.setString(4, user.getPassword());
-
-            preparedStatement.execute();
-            connection.close();
+            PreparedStatement statement = con.prepareStatement("INSERT INTO User (Lastname, Firstname, Email, " +
+                    "Password) VALUES (?, ?, ?, ?)");
+            statement.setString(1, user.getLastName());
+            statement.setString(2, user.getFirstName());
+            statement.setString(3, user.getEmail());
+            statement.setString(4, user.getPassword());
+            statement.execute();
 
             return user;
-
         } catch (SQLException ex) {
             Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new Error(ex);
+        } finally {
+            closeConnection(con);
         }
     }
 
     @Override
-    public User findById(String idUser) {
+    public User findById(String idUser) throws KeyNotFoundException {
+        Connection con = null;
         try {
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM User WHERE idUser = ?");
+            con = dataSource.getConnection();
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM User WHERE idUser = ?");
+            statement.setString(1, idUser);
 
-            preparedStatement.setString(1, idUser);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (!resultSet.next()) {
-                // TODO faire qqch genre une exception
+            ResultSet rs = statement.executeQuery();
+            if (!rs.next()) {
+                throw new KeyNotFoundException("Could not find user with id = " + idUser);
             }
 
-            connection.close();
-
-            return new User(resultSet.getLong(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5));
-
+            return User.builder()
+                    .id(rs.getLong(1))
+                    .lastName(rs.getString(2))
+                    .firstName(rs.getString(3))
+                    .email(rs.getString(4))
+                    .password(rs.getString(5))
+                    .build();
         } catch (SQLException ex) {
             Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new Error(ex);
+        } finally {
+            closeConnection(con);
         }
     }
 
     @Override
-    public User findByEmail(String email) {
-        User user = null;
-
+    public User findByEmail(String email) throws KeyNotFoundException {
+        Connection con = null;
         try {
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM User WHERE Email = ?");
-            preparedStatement.setString(1, email);
+            con = dataSource.getConnection();
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM User WHERE Email = ?");
+            statement.setString(1, email);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                user = new User(resultSet.getLong(1), resultSet.getString(2), resultSet.getString(3),
-                        resultSet.getString(4), resultSet.getString(5));
+            ResultSet rs = statement.executeQuery();
+            if (!rs.next()) {
+                throw new KeyNotFoundException("Could not find user with email = " + email);
             }
 
-            connection.close();
+            return User.builder()
+                    .id(rs.getLong(1))
+                    .lastName(rs.getString(2))
+                    .firstName(rs.getString(3))
+                    .email(rs.getString(4))
+                    .password(rs.getString(5))
+                    .build();
         } catch (SQLException ex) {
             Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new Error(ex);
+        } finally {
+            closeConnection(con);
         }
-
-        return user;
     }
 
     @Override
-    public void update(User user) {
+    public void update(User user) throws KeyNotFoundException {
+        Connection con = null;
         try {
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE User SET Lastname=?, Firstname=?, Email=?, Password=? WHERE Email = ?");
+            con = dataSource.getConnection();
 
-            preparedStatement.setString(1, user.getLastName());
-            preparedStatement.setString(2, user.getFirstName());
-            preparedStatement.setString(3, user.getEmail());
-            preparedStatement.setString(4, user.getPassword());
-            preparedStatement.setString(5, user.getEmail());
+            PreparedStatement statement = con.prepareStatement("UPDATE User SET Lastname=?, Firstname=?, Email=?, " +
+                    "Password=? WHERE Email = ?");
+            statement.setString(1, user.getLastName());
+            statement.setString(2, user.getFirstName());
+            statement.setString(3, user.getEmail());
+            statement.setString(4, user.getPassword());
+            statement.setString(5, user.getEmail());
 
-            int numberOfUpdatedUsers = preparedStatement.executeUpdate();
+            int numberOfUpdatedUsers = statement.executeUpdate();
             if (numberOfUpdatedUsers != 1) {
-                // TODO faire qqch genre une exception
+                throw new KeyNotFoundException("Could not find user with id = " + user.getId());
             }
         } catch (SQLException ex) {
             Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new Error(ex);
+        } finally {
+            closeConnection(con);
         }
     }
 
     @Override
-    public void deleteById(String email) {
+    public void deleteById(String email) throws KeyNotFoundException {
+        Connection con = null;
         try {
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM User WHERE Email = ?");
+            con = dataSource.getConnection();
+            PreparedStatement statement = con.prepareStatement("DELETE FROM User WHERE Email = ?");
+            statement.setString(1, email);
 
-            preparedStatement.setString(1, email);
-
-            int numberOfDeletedUsers = preparedStatement.executeUpdate();
+            int numberOfDeletedUsers = statement.executeUpdate();
             if (numberOfDeletedUsers != 1) {
-                // TODO faire qqch genre une exception
+                throw new KeyNotFoundException("Could not find user with email = " + email);
             }
         } catch (SQLException ex) {
             Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new Error(ex);
+        } finally {
+            closeConnection(con);
+        }
+    }
+
+    private void closeConnection(Connection connection) {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
