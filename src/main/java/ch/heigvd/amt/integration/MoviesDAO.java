@@ -1,5 +1,6 @@
 package ch.heigvd.amt.integration;
 
+import ch.heigvd.amt.datastore.exceptions.KeyNotFoundException;
 import ch.heigvd.amt.model.Movie;
 import ch.heigvd.amt.model.User;
 
@@ -12,8 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Stateless
 public class MoviesDAO implements IMoviesDAO {
@@ -23,156 +22,176 @@ public class MoviesDAO implements IMoviesDAO {
 
     @Override
     public List<Movie> findAllMovies() {
+        Connection con = null;
         List<Movie> movies = new ArrayList<>();
-
         try {
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Movie LIMIT 10");
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                long id = resultSet.getLong("idMovie");
-                String title = resultSet.getString("title");
-                int year = resultSet.getInt("year");
-                movies.add(new Movie(id, title, year));
-            }
-            connection.close();
-            return movies;
+            con = dataSource.getConnection();
 
-        } catch (SQLException ex) {
-            Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Error(ex);
+            // TODO Remove limit and work with pagination... ahaha
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM Movie LIMIT 10");
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                long id = rs.getLong("idMovie");
+                String title = rs.getString("title");
+                int year = rs.getInt("year");
+                movies.add(Movie.builder().id(id).title(title).year(year).build());
+            }
+            return movies;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Error(e);
+        } finally {
+            closeConnection(con);
         }
     }
 
     @Override
     public List<Movie> findSeenMovie(User user) {
+        Connection con = null;
         List<Movie> movies = new ArrayList<>();
-
         try {
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Movie INNER JOIN User_has_seen_Movie ON Movie.idMovie = User_has_seen_Movie.Movie_idMovie WHERE User_has_seen_Movie.User_idUser = ?");
-            preparedStatement.setLong(1, user.getId());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                long id = resultSet.getLong("idMovie");
-                String title = resultSet.getString("title");
-                int year = resultSet.getInt("year");
-                movies.add(new Movie(id, title, year));
-            }
-            connection.close();
-            return movies;
+            con = dataSource.getConnection();
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM Movie INNER JOIN User_has_seen_Movie ON" +
+                    " Movie.idMovie = User_has_seen_Movie.Movie_idMovie WHERE User_has_seen_Movie.User_idUser = ?");
+            statement.setLong(1, user.getId());
 
-        } catch (SQLException ex) {
-            Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Error(ex);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                long id = rs.getLong("idMovie");
+                String title = rs.getString("title");
+                int year = rs.getInt("year");
+                movies.add(Movie.builder().id(id).title(title).year(year).build());
+            }
+            return movies;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Error(e);
+        } finally {
+            closeConnection(con);
         }
     }
 
     @Override
     public List<Movie> findByTitle(String titlePattern) {
+        Connection con = null;
         List<Movie> movies = new ArrayList<>();
-
         titlePattern = '%' + titlePattern + '%';
 
         try {
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Movie WHERE Title LIKE ?");
-            preparedStatement.setString(1, titlePattern);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                long id = resultSet.getLong("idMovie");
-                String title = resultSet.getString("title");
-                int year = resultSet.getInt("year");
-                movies.add(new Movie(id, title, year));
-            }
-            connection.close();
-            return movies;
+            con = dataSource.getConnection();
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM Movie WHERE Title LIKE ?");
+            statement.setString(1, titlePattern);
 
-        } catch (SQLException ex) {
-            Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Error(ex);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                long id = rs.getLong("idMovie");
+                String title = rs.getString("title");
+                int year = rs.getInt("year");
+                movies.add(Movie.builder().id(id).title(title).year(year).build());
+            }
+            return movies;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Error(e);
+        } finally {
+            closeConnection(con);
         }
     }
 
     @Override
     public Movie create(Movie movie) {
+        Connection con = null;
         try {
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Movie (Title, Year) VALUES (?,?)");
+            con = dataSource.getConnection();
 
-            preparedStatement.setString(1, movie.getTitle());
-            preparedStatement.setInt(2, movie.getYear());
-
-            preparedStatement.execute();
-            connection.close();
+            PreparedStatement statement = con.prepareStatement("INSERT INTO Movie (Title, Year) VALUES (?,?)");
+            statement.setString(1, movie.getTitle());
+            statement.setInt(2, movie.getYear());
+            statement.execute();
 
             return movie;
-
-        } catch (SQLException ex) {
-            Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Error(ex);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Error(e);
+        } finally {
+            closeConnection(con);
         }
     }
 
     @Override
-    public Movie findById(String id) {
+    public Movie findById(String id) throws KeyNotFoundException {
+        Connection con = null;
         try {
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Movie WHERE idMovie = ?");
+            con = dataSource.getConnection();
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM Movie WHERE idMovie = ?");
+            statement.setString(1, id);
 
-            preparedStatement.setString(1, id);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (!resultSet.next()) {
-                // TODO faire qqch genre une exception
+            ResultSet rs = statement.executeQuery();
+            if (!rs.next()) {
+                throw new KeyNotFoundException("Could not find movie with id = " + id);
             }
 
+            return Movie.builder()
+                    .id(rs.getLong(1))
+                    .title(rs.getString(2))
+                    .year(rs.getInt(3))
+                    .build();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Error(e);
+        } finally {
+            closeConnection(con);
+        }
+    }
+
+    @Override
+    public void update(Movie movie) throws KeyNotFoundException {
+        Connection con = null;
+        try {
+            con = dataSource.getConnection();
+            PreparedStatement statement = con.prepareStatement("UPDATE Movie SET Title=?, Year=? WHERE idMovie = ?");
+            statement.setString(1, movie.getTitle());
+            statement.setInt(2, movie.getYear());
+            statement.setLong(3, movie.getId());
+
+            int numberOfUpdatedMovies = statement.executeUpdate();
+            if (numberOfUpdatedMovies != 1) {
+                throw new KeyNotFoundException("Could not find movie with id = " + movie.getId());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Error(e);
+        } finally {
+            closeConnection(con);
+        }
+    }
+
+    @Override
+    public void deleteById(String id) throws KeyNotFoundException {
+        Connection con = null;
+        try {
+            con = dataSource.getConnection();
+            PreparedStatement statement = con.prepareStatement("DELETE FROM Movie WHERE idMovie = ?");
+            statement.setString(1, id);
+
+            int numberOfDeletedMovies = statement.executeUpdate();
+            if (numberOfDeletedMovies != 1) {
+                throw new KeyNotFoundException("Could not find movie with id = " + id);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Error(e);
+        } finally {
+            closeConnection(con);
+        }
+    }
+
+    private void closeConnection(Connection connection) {
+        try {
             connection.close();
-
-            return new Movie(resultSet.getLong(1), resultSet.getString(2), resultSet.getInt(3));
-
-        } catch (SQLException ex) {
-            Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Error(ex);
-        }
-    }
-
-    @Override
-    public void update(Movie movie) {
-        try {
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Movie " +
-                    "SET Title=?, Year=? WHERE idMovie = ?");
-
-            preparedStatement.setString(1, movie.getTitle());
-            preparedStatement.setInt(2, movie.getYear());
-            preparedStatement.setLong(3, movie.getId());
-
-            int numberOfUpdatedUsers = preparedStatement.executeUpdate();
-            if (numberOfUpdatedUsers != 1) {
-                // TODO faire qqch genre une exception
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Error(ex);
-        }
-    }
-
-    @Override
-    public void deleteById(String id) {
-        try {
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Movie WHERE idMovie = ?");
-
-            preparedStatement.setString(1, id);
-
-            int numberOfDeletedUsers = preparedStatement.executeUpdate();
-            if (numberOfDeletedUsers != 1) {
-                // TODO faire qqch genre une exception
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Error(ex);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
