@@ -9,12 +9,16 @@ public class MovieTest {
 
     @Test
     public void shouldCreateAMovie() {
-        Movie movie = new Movie(404, "Not Found", 2019);
+        Movie movie = Movie.builder()
+                .id(404)
+                .title("Not Found")
+                .year(2019)
+                .build();
 
         assertNotNull(movie);
 
-        assertEquals(404, movie.getId() );
-        assertEquals("Not Found", movie.getTitle() );
-        assertEquals(2019, movie.getYear() );
+        assertEquals(404, movie.getId());
+        assertEquals("Not Found", movie.getTitle());
+        assertEquals(2019, movie.getYear());
     }
 }

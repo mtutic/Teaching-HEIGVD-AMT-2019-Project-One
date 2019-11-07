@@ -1,5 +1,6 @@
 package ch.heigvd.amt.presentation;
 
+import ch.heigvd.amt.datastore.exceptions.KeyNotFoundException;
 import ch.heigvd.amt.integration.IMoviesDAO;
 import ch.heigvd.amt.model.User;
 
@@ -20,7 +21,13 @@ public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
         User connectedUser = (User) req.getSession().getAttribute("user");
-        req.setAttribute("movies", moviesManager.findSeenMovie(connectedUser));
+
+        try {
+            req.setAttribute("movies", moviesManager.findSeenMovie(connectedUser));
+        } catch (KeyNotFoundException e) {
+            e.printStackTrace();
+        }
+
         req.setAttribute("user", connectedUser);
         req.getRequestDispatcher("index.jsp").forward(req, resp);
     }
