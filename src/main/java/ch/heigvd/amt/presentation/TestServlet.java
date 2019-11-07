@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+// TODO Remove this webservlet at the end
 @WebServlet(name = "TestServlet", urlPatterns = "/test")
 public class TestServlet extends HttpServlet {
 
