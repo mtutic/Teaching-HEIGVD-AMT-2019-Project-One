@@ -10,8 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Stateless
 public class UsersDAO implements IUsersDAO {
@@ -34,9 +32,9 @@ public class UsersDAO implements IUsersDAO {
             statement.execute();
 
             return user;
-        } catch (SQLException ex) {
-            Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Error(ex);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Error(e);
         } finally {
             closeConnection(con);
         }
@@ -62,9 +60,9 @@ public class UsersDAO implements IUsersDAO {
                     .email(rs.getString(4))
                     .password(rs.getString(5))
                     .build();
-        } catch (SQLException ex) {
-            Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Error(ex);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Error(e);
         } finally {
             closeConnection(con);
         }
@@ -90,9 +88,9 @@ public class UsersDAO implements IUsersDAO {
                     .email(rs.getString(4))
                     .password(rs.getString(5))
                     .build();
-        } catch (SQLException ex) {
-            Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Error(ex);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Error(e);
         } finally {
             closeConnection(con);
         }
@@ -116,9 +114,9 @@ public class UsersDAO implements IUsersDAO {
             if (numberOfUpdatedUsers != 1) {
                 throw new KeyNotFoundException("Could not find user with id = " + user.getId());
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Error(ex);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Error(e);
         } finally {
             closeConnection(con);
         }
@@ -136,9 +134,9 @@ public class UsersDAO implements IUsersDAO {
             if (numberOfDeletedUsers != 1) {
                 throw new KeyNotFoundException("Could not find user with email = " + email);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(MoviesDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Error(ex);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Error(e);
         } finally {
             closeConnection(con);
         }
