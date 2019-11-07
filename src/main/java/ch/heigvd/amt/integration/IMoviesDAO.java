@@ -8,7 +8,6 @@ import java.util.List;
 
 @Local
 public interface IMoviesDAO extends IDAO<String, Movie> {
-
     List<Movie> findAllMovies();
     List<Movie> findSeenMovie(User user);
     List<Movie> findByTitle(String title);
