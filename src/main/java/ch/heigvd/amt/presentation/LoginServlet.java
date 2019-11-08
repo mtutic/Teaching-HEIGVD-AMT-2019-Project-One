@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
         try {
             User usr = usersManager.findByEmail(email);
             if (usr.getPassword().equals(password)) {
-                // Save the user id in the session
+                // Save the user in the session
                 req.getSession().setAttribute("user", usr);
                 resp.sendRedirect(req.getContextPath() + "/");
                 return;
