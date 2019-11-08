@@ -31,12 +31,13 @@
   <link href="vendor/slick/slick.css" rel="stylesheet" media="all">
   <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all">
   <link href="vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+  <link href="vendor/datatables/datatables.min.css" rel="stylesheet" media="all">
 
   <!-- Main CSS-->
   <link href="assets/css/theme.css" rel="stylesheet" media="all">
 </head>
 
-<body class="animsition">
+<body>
   <div class="page-wrapper">
     <!-- HEADER MOBILE-->
     <header class="header-mobile d-block d-lg-none">
@@ -157,7 +158,7 @@
               <div class="col-lg-12">
                 <h2 class="title-1 m-b-25">All movies</h2>
                 <div class="table-responsive table--no-card m-b-40">
-                  <table class="table table-borderless table-striped table-earning">
+                  <table id="allMovies" class="table table-borderless table-striped table-earning">
                     <thead>
                       <tr>
                         <th>movie ID</th>
@@ -211,9 +212,19 @@
   <script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
   <script src="vendor/chartjs/Chart.bundle.min.js"></script>
   <script src="vendor/select2/select2.min.js"></script>
+  <script src="vendor/datatables/datatables.min.js"></script>
 
   <!-- Main JS -->
   <script src="assets/js/main.js"></script>
+
+  <!-- Custom JS -->
+  <script>
+    $(document).ready( function () {
+      $('#allMovies').DataTable( {
+        "processing": true,
+      });
+    } );
+  </script>
 </body>
 
 </html>
