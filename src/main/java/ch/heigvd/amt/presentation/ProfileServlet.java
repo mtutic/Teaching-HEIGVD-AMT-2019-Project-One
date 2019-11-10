@@ -1,7 +1,6 @@
 package ch.heigvd.amt.presentation;
 
 import ch.heigvd.amt.datastore.exceptions.KeyNotFoundException;
-import ch.heigvd.amt.integration.IMoviesDAO;
 import ch.heigvd.amt.integration.IUsersDAO;
 import ch.heigvd.amt.model.User;
 
@@ -29,24 +28,43 @@ public class ProfileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Get email and password set by the user
-        String firstname = req.getParameter("firstname");
-        String lastname = req.getParameter("lastname");
-        String password = req.getParameter("password");
+        if (validateForm(req)) {
+            User connectedUser = (User) req.getSession().getAttribute("user");
 
-        User connectedUser = (User) req.getSession().getAttribute("user");
+            User user = User.builder()
+                    .lastName(req.getParameter("lastname"))
+                    .firstName(req.getParameter("firstname"))
+                    .email(connectedUser.getEmail())
+                    .password(req.getParameter("password"))
+                    .build();
 
-        connectedUser.setLastName(lastname);
-        connectedUser.setFirstName(firstname);
-        connectedUser.setPassword(password);
-
-        try {
-            usersManager.update(connectedUser);
-            req.getSession().setAttribute("user", connectedUser);
-        } catch (KeyNotFoundException e) {
-            e.printStackTrace();
+            try {
+                usersManager.update(user);
+                req.getSession().setAttribute("user", user);
+                req.setAttribute("success", "Update successful !");
+            } catch (KeyNotFoundException e) {
+                e.printStackTrace();
+            }
         }
 
         req.getRequestDispatcher("/WEB-INF/pages/profile.jsp").forward(req, resp);
+    }
+
+    private boolean validateForm(HttpServletRequest req) {
+        String lastname = req.getParameter("lastname");
+        String firstname = req.getParameter("firstname");
+        String password = req.getParameter("password");
+
+        if (lastname.isEmpty()) {
+            req.setAttribute("error", "Lastname cannot be empty");
+        } else if (firstname.isEmpty()) {
+            req.setAttribute("error", "Firstname cannot be empty");
+        } else if (password.isEmpty() || password.length() < 5) {
+            req.setAttribute("error", "Wrong password");
+        } else {
+            return true;
+        }
+
+        return false;
     }
 }
