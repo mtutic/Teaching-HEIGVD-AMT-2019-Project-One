@@ -3,6 +3,7 @@ package ch.heigvd.amt.model;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Class used to represent one user
@@ -11,6 +12,7 @@ import lombok.Getter;
 @Builder(toBuilder = true)
 @EqualsAndHashCode
 @Getter
+@Setter
 public class User {
     private long id;
     private String lastName;

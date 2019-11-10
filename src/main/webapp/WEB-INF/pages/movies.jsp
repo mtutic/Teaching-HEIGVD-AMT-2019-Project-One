@@ -137,6 +137,10 @@
                         </div>
                       </div>
                       <div class="account-dropdown__footer">
+                        <a href="<%=request.getContextPath() + "/profile"%>">
+                          <i class="zmdi zmdi-edit"></i>Edit profile</a>
+                      </div>
+                      <div class="account-dropdown__footer">
                         <a href="<%=request.getContextPath() + "/logout"%>">
                           <i class="zmdi zmdi-power"></i>Logout</a>
                       </div>
@@ -221,7 +225,6 @@
   <script>
     $(document).ready( function () {
       $('#allMovies').DataTable( {
-        "processing": true,
       });
     } );
   </script>
