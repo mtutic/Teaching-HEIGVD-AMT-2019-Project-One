@@ -14,7 +14,7 @@ public class LogoutServlet extends HttpServlet {
         // Unbound any objects bound to the session
         req.getSession().invalidate();
 
-        // Redirect to the login page
-        req.getRequestDispatcher("/WEB-INF/pages/login.jsp").forward(req, resp);
+        // Redirect to the main page
+        resp.sendRedirect(req.getContextPath());
     }
 }

@@ -31,8 +31,8 @@ public class LoginServlet extends HttpServlet {
         // Check if the user exists in the database
         try {
             User usr = usersManager.findByEmail(email);
-            if (usr.getPassword().equals(password)) {
-                // Save the user id in the session
+            if (usr.getPassword().length() >= 5 && usr.getPassword().equals(password)) {
+                // Save the user in the session
                 req.getSession().setAttribute("user", usr);
                 resp.sendRedirect(req.getContextPath() + "/");
                 return;
@@ -42,7 +42,7 @@ public class LoginServlet extends HttpServlet {
             }
         } catch (KeyNotFoundException e) {
             // The email doesn't exist
-            req.setAttribute("error", "Wrong user email !");
+            req.setAttribute("error", e.getMessage());
         }
 
         req.getRequestDispatcher("/WEB-INF/pages/login.jsp").forward(req, resp);

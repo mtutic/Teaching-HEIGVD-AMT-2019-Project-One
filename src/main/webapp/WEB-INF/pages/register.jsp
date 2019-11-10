@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,6 +42,14 @@
     <div class="page-content--bge5">
       <div class="container">
         <div class="login-wrap">
+          <c:if test="${not empty error}">
+            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                ${error}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </c:if>
           <div class="login-content">
             <div class="login-logo">
               <a href="#">
@@ -47,28 +57,54 @@
               </a>
             </div>
             <div class="login-form">
-              <form action="" method="post">
+              <form data-toggle="validator" role="form" method="post">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label>Lastname</label>
-                      <input class="au-input au-input--full" type="text" name="lastname" placeholder="Lastname">
+                      <label class="control-label" for="lastname">Lastname</label>
+                      <input id="lastname"
+                             class="au-input au-input--full form-control"
+                             type="text"
+                             name="lastname"
+                             placeholder="Lastname"
+                             required>
+                      <div class="text-danger help-block with-errors"></div>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label>Firstname</label>
-                      <input class="au-input au-input--full" type="text" name="firstname" placeholder="Firstname">
+                      <label class="control-label" for="firstname">Firstname</label>
+                      <input id="firstname"
+                             class="au-input au-input--full form-control"
+                             type="text"
+                             name="firstname"
+                             placeholder="Firstname"
+                             required>
+                      <div class="text-danger help-block with-errors"></div>
                     </div>
                   </div>
                 </div>
                 <div class="form-group">
-                  <label>Email Address</label>
-                  <input class="au-input au-input--full" type="email" name="email" placeholder="Email">
+                  <label class="control-label" for="email">Email Address</label>
+                  <input id="email"
+                         class="au-input au-input--full form-control"
+                         type="email"
+                         name="email"
+                         placeholder="Email"
+                         required>
+                  <div class="text-danger help-block with-errors"></div>
                 </div>
                 <div class="form-group">
-                  <label>Password</label>
-                  <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
+                  <label class="control-label" for="password">Password</label>
+                  <input id="password"
+                         class="au-input au-input--full form-control"
+                         type="password"
+                         name="password"
+                         placeholder="Password"
+                         data-minlength="5"
+                         data-error="Le mot de passe doit avoir au minimum 5 caractères"
+                         required>
+                  <div class="text-danger help-block with-errors"></div>
                 </div>
                 <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">register</button>
               </form>
@@ -83,7 +119,6 @@
         </div>
       </div>
     </div>
-
   </div>
 
   <!-- Jquery JS-->
@@ -92,24 +127,20 @@
   <script src="vendor/bootstrap-4.1/popper.min.js"></script>
   <script src="vendor/bootstrap-4.1/bootstrap.min.js"></script>
   <!-- Vendor JS       -->
-  <script src="vendor/slick/slick.min.js">
-  </script>
+  <script src="vendor/slick/slick.min.js"></script>
   <script src="vendor/wow/wow.min.js"></script>
   <script src="vendor/animsition/animsition.min.js"></script>
-  <script src="vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
-  </script>
+  <script src="vendor/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+  <script src="vendor/bootstrap-validate/validate.min.js"></script>
   <script src="vendor/counter-up/jquery.waypoints.min.js"></script>
-  <script src="vendor/counter-up/jquery.counterup.min.js">
-  </script>
+  <script src="vendor/counter-up/jquery.counterup.min.js"></script>
   <script src="vendor/circle-progress/circle-progress.min.js"></script>
   <script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
   <script src="vendor/chartjs/Chart.bundle.min.js"></script>
-  <script src="vendor/select2/select2.min.js">
-  </script>
+  <script src="vendor/select2/select2.min.js"></script>
 
-  <!-- Main JS-->
+    <!-- Main JS-->
   <script src="assets/js/main.js"></script>
-
 </body>
 
 </html>

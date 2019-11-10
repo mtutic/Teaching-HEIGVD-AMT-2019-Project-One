@@ -1,15 +1,13 @@
 package ch.heigvd.amt.integration;
 
+import ch.heigvd.amt.datastore.exceptions.DuplicateKeyException;
 import ch.heigvd.amt.datastore.exceptions.KeyNotFoundException;
 import ch.heigvd.amt.model.User;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 @Stateless
 public class UsersDAO implements IUsersDAO {
@@ -18,20 +16,26 @@ public class UsersDAO implements IUsersDAO {
     private DataSource dataSource;
 
     @Override
-    public User create(User user) {
+    public User create(User user) throws DuplicateKeyException {
         Connection con = null;
         try {
             con = dataSource.getConnection();
 
             PreparedStatement statement = con.prepareStatement("INSERT INTO User (Lastname, Firstname, Email, " +
-                    "Password) VALUES (?, ?, ?, ?)");
+                    "Password) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, user.getLastName());
             statement.setString(2, user.getFirstName());
             statement.setString(3, user.getEmail());
             statement.setString(4, user.getPassword());
-            statement.execute();
+            statement.executeUpdate();
 
+            ResultSet rs = statement.getGeneratedKeys();
+            if (rs.next()) {
+                return user.toBuilder().id(rs.getInt(1)).build();
+            }
             return user;
+        } catch (SQLIntegrityConstraintViolationException e) {
+            throw new DuplicateKeyException("User already exists with email = " + user.getEmail());
         } catch (SQLException e) {
             e.printStackTrace();
             throw new Error(e);

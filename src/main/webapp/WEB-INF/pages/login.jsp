@@ -57,14 +57,28 @@
               </a>
             </div>
             <div class="login-form">
-              <form action="" method="post">
+              <form data-toggle="validator" role="form" method="post">
                 <div class="form-group">
-                  <label>Email Address</label>
-                  <input class="au-input au-input--full" type="email" name="email" placeholder="Email">
+                  <label class="control-label" for="email">Email Address</label>
+                  <input id="email"
+                         class="au-input au-input--full form-control"
+                         type="email"
+                         name="email"
+                         placeholder="Email"
+                         required>
+                  <div class="text-danger help-block with-errors"></div>
                 </div>
                 <div class="form-group">
-                  <label>Password</label>
-                  <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
+                  <label class="control-label" for="password">Password</label>
+                  <input id="password"
+                         class="au-input au-input--full form-control"
+                         type="password"
+                         name="password"
+                         placeholder="Password"
+                         data-minlength="5"
+                         data-error="Le mot de passe doit avoir au minimum 5 caractères"
+                         required>
+                  <div class="text-danger help-block with-errors"></div>
                 </div>
                 <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">sign in</button>
               </form>
@@ -87,20 +101,17 @@
   <script src="vendor/bootstrap-4.1/popper.min.js"></script>
   <script src="vendor/bootstrap-4.1/bootstrap.min.js"></script>
   <!-- Vendor JS       -->
-  <script src="vendor/slick/slick.min.js">
-  </script>
+  <script src="vendor/slick/slick.min.js"></script>
   <script src="vendor/wow/wow.min.js"></script>
   <script src="vendor/animsition/animsition.min.js"></script>
-  <script src="vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
-  </script>
+  <script src="vendor/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+  <script src="vendor/bootstrap-validate/validate.min.js"></script>
   <script src="vendor/counter-up/jquery.waypoints.min.js"></script>
-  <script src="vendor/counter-up/jquery.counterup.min.js">
-  </script>
+  <script src="vendor/counter-up/jquery.counterup.min.js"></script>
   <script src="vendor/circle-progress/circle-progress.min.js"></script>
   <script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
   <script src="vendor/chartjs/Chart.bundle.min.js"></script>
-  <script src="vendor/select2/select2.min.js">
-  </script>
+  <script src="vendor/select2/select2.min.js"></script>
 
   <!-- Main JS-->
   <script src="assets/js/main.js"></script>
