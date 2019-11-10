@@ -10,6 +10,8 @@ import java.util.List;
 @Local
 public interface IMoviesDAO extends IDAO<String, Movie> {
     List<Movie> findAllMovies();
+    List<Movie> findMovies(int start, int length);
+    int getNumberOfMovies();
     List<Movie> findSeenMovie(User user) throws KeyNotFoundException;
     List<Movie> findByTitle(String title) throws KeyNotFoundException;
 }

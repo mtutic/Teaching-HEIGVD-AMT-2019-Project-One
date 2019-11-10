@@ -170,15 +170,6 @@
                         <th>year</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <c:forEach items="${movies}" var="movie">
-                        <tr>
-                          <td>${movie.id}</td>
-                          <td>${movie.title}</td>
-                          <td>${movie.year}</td>
-                        </tr>
-                      </c:forEach>
-                    </tbody>
                   </table>
                 </div>
               </div>
@@ -224,7 +215,23 @@
   <!-- Custom JS -->
   <script>
     $(document).ready( function () {
-      $('#allMovies').DataTable( {
+      $('#allMovies').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+          url: '<%=request.getContextPath() + "/movies"%>',
+          type: 'POST'
+        },
+        columns: [{
+          data: "id",
+          mData: "id"
+        }, {
+          data: "title",
+          mData: "title"
+        }, {
+          data: "year",
+          mdata: "year"
+        }]
       });
     } );
   </script>

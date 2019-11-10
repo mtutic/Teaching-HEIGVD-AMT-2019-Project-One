@@ -47,6 +47,52 @@ public class MoviesDAO implements IMoviesDAO {
     }
 
     @Override
+    public List<Movie> findMovies(int start, int length) {
+        Connection con = null;
+        List<Movie> movies = new ArrayList<>();
+        try {
+            con = dataSource.getConnection();
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM Movie LIMIT ?, ?");
+            statement.setInt(1, start);
+            statement.setInt(2, length);
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                long id = rs.getLong("idMovie");
+                String title = rs.getString("title");
+                int year = rs.getInt("year");
+                movies.add(Movie.builder().id(id).title(title).year(year).build());
+            }
+            return movies;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Error(e);
+        } finally {
+            closeConnection(con);
+        }
+    }
+
+    @Override
+    public int getNumberOfMovies() {
+        Connection con = null;
+        try {
+            con = dataSource.getConnection();
+            PreparedStatement statement = con.prepareStatement("SELECT COUNT(*) FROM Movie");
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Error(e);
+        } finally {
+            closeConnection(con);
+        }
+    }
+
+    @Override
     public List<Movie> findSeenMovie(User user) {
         Connection con = null;
         List<Movie> movies = new ArrayList<>();
