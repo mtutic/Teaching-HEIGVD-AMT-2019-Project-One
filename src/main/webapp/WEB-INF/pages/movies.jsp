@@ -160,17 +160,21 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-12">
-                <h2 class="title-1 m-b-25">All movies</h2>
-                <div class="table-responsive table--no-card m-b-40">
-                  <table id="allMovies" class="table table-borderless table-striped table-earning">
-                    <thead>
-                      <tr>
-                        <th>movie ID</th>
-                        <th>title</th>
-                        <th>year</th>
-                      </tr>
-                    </thead>
-                  </table>
+                <div class="card">
+                  <div class="card-header">All movies</div>
+                  <div class="card-body card-block" style="background-color: #ebebeb;">
+                    <div class="table-responsive table--no-card m-b-40">
+                      <table id="allMovies" class="table table-borderless table-striped table-earning">
+                        <thead>
+                        <tr>
+                          <th>movie ID</th>
+                          <th>title</th>
+                          <th>year</th>
+                        </tr>
+                        </thead>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
