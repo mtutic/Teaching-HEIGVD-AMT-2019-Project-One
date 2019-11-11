@@ -31,7 +31,6 @@
   <link href="vendor/slick/slick.css" rel="stylesheet" media="all">
   <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all">
   <link href="vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
-  <link href="vendor/datatables/datatables.min.css" rel="stylesheet" media="all">
 
   <!-- Main CSS-->
   <link href="assets/css/theme.css" rel="stylesheet" media="all">
@@ -169,8 +168,9 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="card">
-                <div class="card-header">
-                  Your profile
+                <div class="card-header align-items-center d-flex justify-content-between">
+                  <div>Your profile</div>
+                  <button class="btn btn-danger btn-rounded" onclick="window.location.href='/project-one/profile/delete'">Delete Account</button>
                 </div>
                 <div class="card-body card-block">
                   <form data-toggle="validator" role="form" method="post">
@@ -254,20 +254,10 @@
 <script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
 <script src="vendor/chartjs/Chart.bundle.min.js"></script>
 <script src="vendor/select2/select2.min.js"></script>
-<script src="vendor/datatables/datatables.min.js"></script>
 <script src="vendor/bootstrap-validate/validate.min.js"></script>
 
 <!-- Main JS -->
 <script src="assets/js/main.js"></script>
-
-<!-- Custom JS -->
-<script>
-    $(document).ready(function () {
-        $('#allMovies').DataTable({
-            "processing": true,
-        });
-    });
-</script>
 </body>
 
 </html>
