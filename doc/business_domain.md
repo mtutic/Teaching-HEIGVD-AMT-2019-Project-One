@@ -8,7 +8,7 @@ To make that, we have found a open source database with a lot of movie and we ha
 
 To create more data, we also used a website to create 3000 users. Each of them is represented by a first name, last name, an email (unique in database), and a password.
 
-[EER Diagram](img/EER_diagram.png)
+![EER Diagram](img/EER_diagram.png)
 
 ## Application
 First of all, when you arrive on the website, we will ask you an email and a password to log in. If you dont already have an account, you can create one.
