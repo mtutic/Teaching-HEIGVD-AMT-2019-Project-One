@@ -163,14 +163,14 @@
                 <div class="card">
                   <div class="card-header">All movies</div>
                   <div class="card-body card-block" style="background-color: #ebebeb;">
-                    <div class="table-responsive table--no-card m-b-40">
+                    <div class="table-responsive m-b-40">
                       <table id="allMovies" class="table table-borderless table-striped table-earning">
                         <thead>
-                        <tr>
-                          <th>movie ID</th>
-                          <th>title</th>
-                          <th>year</th>
-                        </tr>
+                          <tr>
+                            <th>movie ID</th>
+                            <th>title</th>
+                            <th>year</th>
+                          </tr>
                         </thead>
                       </table>
                     </div>

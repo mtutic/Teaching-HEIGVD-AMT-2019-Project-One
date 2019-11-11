@@ -160,26 +160,23 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-12">
-                <h2 class="title-1 m-b-25">Movies you've seen</h2>
-                <div class="table-responsive table--no-card m-b-40">
-                  <table id="seenMovies" class="table table-borderless table-striped table-earning">
-                    <thead>
-                      <tr>
-                        <th>movie ID</th>
-                        <th>title</th>
-                        <th>year</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <c:forEach items="${movies}" var="movie">
-                        <tr>
-                          <td>${movie.id}</td>
-                          <td>${movie.title}</td>
-                          <td>${movie.year}</td>
-                        </tr>
-                      </c:forEach>
-                    </tbody>
-                  </table>
+                <div class="card">
+                  <div class="card-header">
+                    Movies you've seen
+                  </div>
+                  <div class="card-body card-block" style="background-color: #ebebeb;">
+                    <div class="table-responsive m-b-40">
+                      <table id="seenMovies" class="table table-borderless table-striped table-earning">
+                        <thead>
+                          <tr>
+                            <th>movie ID</th>
+                            <th>title</th>
+                            <th>year</th>
+                          </tr>
+                        </thead>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -223,10 +220,28 @@
 
   <!-- Custom JS -->
   <script>
-    $(document).ready( function () {
-      $('#seenMovies').DataTable( {
+    $(document).ready(function () {
+      $('#seenMovies').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+          url: '<%=request.getContextPath() + "/"%>',
+          type: 'POST'
+        },
+        columns: [{
+          searchable: false,
+          data: "id",
+          mData: "id"
+        }, {
+          data: "title",
+          mData: "title"
+        }, {
+          searchable: false,
+          data: "year",
+          mdata: "year"
+        }]
       });
-    } );
+    });
   </script>
 </body>
 

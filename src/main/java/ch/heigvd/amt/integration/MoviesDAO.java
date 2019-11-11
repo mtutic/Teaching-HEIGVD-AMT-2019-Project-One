@@ -20,33 +20,6 @@ public class MoviesDAO implements IMoviesDAO {
     @Resource(lookup = "jdbc/movie_history")
     private DataSource dataSource;
 
-    // TODO Remove this method at the end
-    @Override
-    public List<Movie> findAllMovies() {
-        Connection con = null;
-        List<Movie> movies = new ArrayList<>();
-        try {
-            con = dataSource.getConnection();
-
-            // TODO Remove limit and work with pagination... ahaha
-            PreparedStatement statement = con.prepareStatement("SELECT * FROM Movie LIMIT 10");
-
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                long id = rs.getLong("idMovie");
-                String title = rs.getString("title");
-                int year = rs.getInt("year");
-                movies.add(Movie.builder().id(id).title(title).year(year).build());
-            }
-            return movies;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new Error(e);
-        } finally {
-            closeConnection(con);
-        }
-    }
-
     @Override
     public List<Movie> findMovies(int start, int length, String searchTitle) {
         Connection con = null;
@@ -95,14 +68,18 @@ public class MoviesDAO implements IMoviesDAO {
     }
 
     @Override
-    public List<Movie> findSeenMovie(User user) {
+    public List<Movie> findSeenMovies(User user, int start, int lenght, String searchTitle) {
         Connection con = null;
         List<Movie> movies = new ArrayList<>();
         try {
             con = dataSource.getConnection();
             PreparedStatement statement = con.prepareStatement("SELECT * FROM Movie INNER JOIN User_has_seen_Movie ON" +
-                    " Movie.idMovie = User_has_seen_Movie.Movie_idMovie WHERE User_has_seen_Movie.User_idUser = ?");
+                    " Movie.idMovie = User_has_seen_Movie.Movie_idMovie WHERE User_has_seen_Movie.User_idUser = ? " +
+                    "AND Title Like ? LIMIT ?, ?");
             statement.setLong(1, user.getId());
+            statement.setString(2, "%" + searchTitle + "%");
+            statement.setInt(3, start);
+            statement.setInt(4, lenght);
 
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
@@ -112,6 +89,27 @@ public class MoviesDAO implements IMoviesDAO {
                 movies.add(Movie.builder().id(id).title(title).year(year).build());
             }
             return movies;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Error(e);
+        } finally {
+            closeConnection(con);
+        }
+    }
+
+    public int getNumberOfSeenMovies(User user) {
+        Connection con = null;
+        try {
+            con = dataSource.getConnection();
+            PreparedStatement statement = con.prepareStatement("SELECT COUNT(*) FROM User_has_seen_Movie WHERE " +
+                    "User_idUser = ?");
+            statement.setLong(1, user.getId());
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new Error(e);
