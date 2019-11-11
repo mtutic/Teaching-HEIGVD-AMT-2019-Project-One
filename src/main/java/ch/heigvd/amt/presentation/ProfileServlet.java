@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "ProfileServlet", urlPatterns = "/profile")
+@WebServlet(name = "ProfileServlet", urlPatterns = {"/profile", "/profile/delete"})
 public class ProfileServlet extends HttpServlet {
 
     @EJB
@@ -20,10 +20,20 @@ public class ProfileServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html;charset=UTF-8");
         User connectedUser = (User) req.getSession().getAttribute("user");
-        req.setAttribute("user", connectedUser);
-        req.getRequestDispatcher("/WEB-INF/pages/profile.jsp").forward(req, resp);
+
+        if (req.getServletPath().equals("/profile")) {
+            resp.setContentType("text/html;charset=UTF-8");
+            req.setAttribute("user", connectedUser);
+            req.getRequestDispatcher("/WEB-INF/pages/profile.jsp").forward(req, resp);
+        } else if (req.getServletPath().equals("/profile/delete")) {
+            try {
+                usersManager.deleteById(connectedUser.getEmail());
+                resp.sendRedirect(req.getContextPath() + "/logout");
+            } catch (KeyNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

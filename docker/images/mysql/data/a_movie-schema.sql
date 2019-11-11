@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `movie_history`.`User_has_seen_Movie` (
   CONSTRAINT `fk_User_has_Movie_User`
     FOREIGN KEY (`User_idUser`)
     REFERENCES `movie_history`.`User` (`idUser`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_User_has_Movie_Movie1`
     FOREIGN KEY (`Movie_idMovie`)

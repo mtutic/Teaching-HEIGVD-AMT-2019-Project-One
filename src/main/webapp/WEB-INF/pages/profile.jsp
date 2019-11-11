@@ -31,7 +31,6 @@
   <link href="vendor/slick/slick.css" rel="stylesheet" media="all">
   <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all">
   <link href="vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
-  <link href="vendor/datatables/datatables.min.css" rel="stylesheet" media="all">
 
   <!-- Main CSS-->
   <link href="assets/css/theme.css" rel="stylesheet" media="all">
@@ -58,17 +57,13 @@
     <nav class="navbar-mobile">
       <div class="container-fluid">
         <ul class="navbar-mobile__list list-unstyled">
-          <li class="has-sub">
-            <a class="js-arrow" href="#">
-              <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+          <li>
+            <a href="/project-one/">
+              <i class="fas fa-home"></i>Movies you've seen</a>
           </li>
           <li>
-            <a href="table.html">
-              <i class="fas fa-table"></i>Tables</a>
-          </li>
-          <li>
-            <a href="form.html">
-              <i class="far fa-check-square"></i>Forms</a>
+            <a href="/project-one/movies">
+              <i class="fas fa-video"></i>All movies</a>
           </li>
         </ul>
       </div>
@@ -93,10 +88,6 @@
           <li>
             <a href="/project-one/movies">
               <i class="fas fa-video"></i>All movies</a>
-          </li>
-          <li>
-            <a href="form.html">
-              <i class="far fa-check-square"></i>Forms</a>
           </li>
         </ul>
       </nav>
@@ -177,8 +168,9 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="card">
-                <div class="card-header">
-                  Your profile
+                <div class="card-header align-items-center d-flex justify-content-between">
+                  <div>Your profile</div>
+                  <button class="btn btn-danger btn-rounded" onclick="window.location.href='/project-one/profile/delete'">Delete Account</button>
                 </div>
                 <div class="card-body card-block">
                   <form data-toggle="validator" role="form" method="post">
@@ -262,20 +254,10 @@
 <script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
 <script src="vendor/chartjs/Chart.bundle.min.js"></script>
 <script src="vendor/select2/select2.min.js"></script>
-<script src="vendor/datatables/datatables.min.js"></script>
 <script src="vendor/bootstrap-validate/validate.min.js"></script>
 
 <!-- Main JS -->
 <script src="assets/js/main.js"></script>
-
-<!-- Custom JS -->
-<script>
-    $(document).ready(function () {
-        $('#allMovies').DataTable({
-            "processing": true,
-        });
-    });
-</script>
 </body>
 
 </html>
