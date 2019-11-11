@@ -143,11 +143,16 @@ public class MoviesDAO implements IMoviesDAO {
         try {
             con = dataSource.getConnection();
 
-            PreparedStatement statement = con.prepareStatement("INSERT INTO Movie (Title, Year) VALUES (?,?)");
+            PreparedStatement statement = con.prepareStatement("INSERT INTO Movie (Title, Year) VALUES (?,?)",
+                    Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, movie.getTitle());
             statement.setInt(2, movie.getYear());
-            statement.execute();
+            statement.executeUpdate();
 
+            ResultSet rs = statement.getGeneratedKeys();
+            if (rs.next()) {
+                return movie.toBuilder().id(rs.getInt(1)).build();
+            }
             return movie;
         } catch (SQLException e) {
             e.printStackTrace();
