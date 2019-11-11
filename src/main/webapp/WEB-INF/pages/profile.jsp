@@ -58,17 +58,13 @@
     <nav class="navbar-mobile">
       <div class="container-fluid">
         <ul class="navbar-mobile__list list-unstyled">
-          <li class="has-sub">
-            <a class="js-arrow" href="#">
-              <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+          <li>
+            <a href="/project-one/">
+              <i class="fas fa-home"></i>Movies you've seen</a>
           </li>
           <li>
-            <a href="table.html">
-              <i class="fas fa-table"></i>Tables</a>
-          </li>
-          <li>
-            <a href="form.html">
-              <i class="far fa-check-square"></i>Forms</a>
+            <a href="/project-one/movies">
+              <i class="fas fa-video"></i>All movies</a>
           </li>
         </ul>
       </div>
@@ -93,10 +89,6 @@
           <li>
             <a href="/project-one/movies">
               <i class="fas fa-video"></i>All movies</a>
-          </li>
-          <li>
-            <a href="form.html">
-              <i class="far fa-check-square"></i>Forms</a>
           </li>
         </ul>
       </nav>
