@@ -1,5 +1,6 @@
 package ch.heigvd.amt.integration;
 
+import ch.heigvd.amt.datastore.exceptions.DuplicateKeyException;
 import ch.heigvd.amt.datastore.exceptions.KeyNotFoundException;
 import ch.heigvd.amt.model.Movie;
 import ch.heigvd.amt.model.User;
@@ -7,10 +8,7 @@ import ch.heigvd.amt.model.User;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,25 +117,19 @@ public class MoviesDAO implements IMoviesDAO {
     }
 
     @Override
-    public List<Movie> findByTitle(String titlePattern) {
+    public void createSeenMovie(long movieId, long userId) throws DuplicateKeyException {
         Connection con = null;
-        List<Movie> movies = new ArrayList<>();
-        titlePattern = '%' + titlePattern + '%';
-
         try {
             con = dataSource.getConnection();
-            PreparedStatement statement = con.prepareStatement("SELECT * FROM Movie WHERE Title LIKE ?");
-            statement.setString(1, titlePattern);
-
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                long id = rs.getLong("idMovie");
-                String title = rs.getString("title");
-                int year = rs.getInt("year");
-                movies.add(Movie.builder().id(id).title(title).year(year).build());
-            }
-            return movies;
-        } catch (SQLException e) {
+            PreparedStatement statement = con.prepareStatement("INSERT INTO User_has_seen_Movie (User_idUser, " +
+                    "Movie_idMovie) VALUES (?, ?)");
+            statement.setLong(1, userId);
+            statement.setLong(2, movieId);
+            statement.execute();
+        } catch (SQLIntegrityConstraintViolationException e) {
+            throw new DuplicateKeyException("The movie with id = " + movieId + " is already marked as seen");
+        }
+        catch (SQLException e) {
             e.printStackTrace();
             throw new Error(e);
         } finally {

@@ -32,10 +32,12 @@ public class HomeServlet extends HttpServlet {
 
             try {
                 moviesManager.deleteSeenMovieById(id, connectedUser.getId());
-                req.setAttribute("success", "Update successful !");
+                req.getSession().setAttribute("success", "Update successful !");
             } catch (KeyNotFoundException e) {
-                req.setAttribute("error", e.getMessage());
+                req.getSession().setAttribute("error", e.getMessage());
             }
+            resp.sendRedirect(req.getContextPath());
+            return;
         }
         req.getRequestDispatcher("index.jsp").forward(req, resp);
     }

@@ -1,5 +1,6 @@
 package ch.heigvd.amt.presentation;
 
+import ch.heigvd.amt.datastore.exceptions.DuplicateKeyException;
 import ch.heigvd.amt.integration.IMoviesDAO;
 import ch.heigvd.amt.model.Movie;
 import ch.heigvd.amt.model.User;
@@ -16,7 +17,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
-@WebServlet(name = "MoviesServlet", urlPatterns = "/movies")
+@WebServlet(name = "MoviesServlet", urlPatterns = {"/movies", "/movies/add"})
 public class MoviesServlet extends HttpServlet {
 
     @EJB
@@ -24,6 +25,22 @@ public class MoviesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getServletPath();
+
+        if (action.equals("/movies/add")) {
+            User userConnected = (User) req.getSession().getAttribute("user");
+            long id = Long.parseLong(req.getParameter("id"));
+
+            try {
+                moviesManager.createSeenMovie(id, userConnected.getId());
+                req.getSession().setAttribute("success", "Update successful !");
+            } catch (DuplicateKeyException e) {
+                req.getSession().setAttribute("error", e.getMessage());
+            }
+            resp.sendRedirect(req.getContextPath() + "/movies");
+            return;
+        }
+
         req.getRequestDispatcher("/WEB-INF/pages/movies.jsp").forward(req, resp);
     }
 

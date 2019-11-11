@@ -15,7 +15,7 @@
   <title>Movie history</title>
 
   <!-- Fontfaces CSS-->
-  <link href="assets/css/font-face.css" rel="stylesheet" media="all">
+  <link href="./assets/css/font-face.css" rel="stylesheet" media="all">
   <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
   <link href="vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
   <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
@@ -158,6 +158,26 @@
       <div class="main-content">
         <div class="section__content section__content--p30">
           <div class="container-fluid">
+            <c:if test="${not empty error}">
+              <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                  ${error}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </c:if>
+            <c:if test="${not empty success}">
+              <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+                  ${success}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </c:if>
+            <%
+              request.getSession().removeAttribute("success");
+              request.getSession().removeAttribute("error");
+            %>
             <div class="row">
               <div class="col-lg-12">
                 <div class="card">
@@ -170,6 +190,7 @@
                             <th>movie ID</th>
                             <th>title</th>
                             <th>year</th>
+                            <th>action</th>
                           </tr>
                         </thead>
                       </table>
@@ -237,6 +258,17 @@
           searchable: false,
           data: "year",
           mdata: "year"
+        }, {
+          data: null,
+          searchable: false,
+          render: function(data, type, row) {
+            var url = '<%=request.getContextPath() + "/movies"%>' + "/add?id=" + row.id;
+            return '<button ' +
+              'type="button" ' +
+              'class="btn btn-primary btn-sm" ' +
+              'style="padding: 0 5px 0 5px"' +
+              'onclick="location.href=\'' + url + '\'">mark as seen</button>';
+          }
         }]
       });
     } );

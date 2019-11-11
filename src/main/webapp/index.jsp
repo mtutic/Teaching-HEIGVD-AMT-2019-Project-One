@@ -174,6 +174,10 @@
                 </button>
               </div>
             </c:if>
+            <%
+              request.getSession().removeAttribute("success");
+              request.getSession().removeAttribute("error");
+            %>
             <div class="row">
               <div class="col-lg-12">
                 <div class="card">
@@ -260,7 +264,6 @@
           data: null,
           searchable: false,
           render: function(data, type, row) {
-            console.log(row.id);
             var url = '<%=request.getContextPath()%>' + "/delete?id=" + row.id;
             return '<button ' +
               'type="button" ' +
