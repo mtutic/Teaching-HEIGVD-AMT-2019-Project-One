@@ -9,8 +9,9 @@ import java.util.List;
 
 @Local
 public interface IMoviesDAO extends IDAO<String, Movie> {
+    // TODO Remove this method at the end
     List<Movie> findAllMovies();
-    List<Movie> findMovies(int start, int length);
+    List<Movie> findMovies(int start, int length, String searchTitle);
     int getNumberOfMovies();
     List<Movie> findSeenMovie(User user) throws KeyNotFoundException;
     List<Movie> findByTitle(String title) throws KeyNotFoundException;

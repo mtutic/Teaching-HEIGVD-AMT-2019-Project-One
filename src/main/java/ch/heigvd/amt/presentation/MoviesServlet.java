@@ -35,12 +35,14 @@ public class MoviesServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int start = Integer.parseInt(req.getParameter("start"));
         int length = Integer.parseInt(req.getParameter("length"));
-        List<Movie> movies = moviesManager.findMovies(start, length);
+        String searchTitle = req.getParameter("search[value]");
+
+        List<Movie> movies = moviesManager.findMovies(start, length, searchTitle);
         int recordsTotal = moviesManager.getNumberOfMovies();
 
         // Create the JSON to send to the datatable
         Gson gson = new Gson();
-        HashMap response = new HashMap<>();
+        HashMap<String, Object> response = new HashMap<>();
         response.put("recordsTotal", recordsTotal);
         response.put("recordsFiltered", recordsTotal);
         response.put("data", movies);

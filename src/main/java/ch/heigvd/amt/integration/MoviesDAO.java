@@ -20,6 +20,7 @@ public class MoviesDAO implements IMoviesDAO {
     @Resource(lookup = "jdbc/movie_history")
     private DataSource dataSource;
 
+    // TODO Remove this method at the end
     @Override
     public List<Movie> findAllMovies() {
         Connection con = null;
@@ -47,14 +48,15 @@ public class MoviesDAO implements IMoviesDAO {
     }
 
     @Override
-    public List<Movie> findMovies(int start, int length) {
+    public List<Movie> findMovies(int start, int length, String searchTitle) {
         Connection con = null;
         List<Movie> movies = new ArrayList<>();
         try {
             con = dataSource.getConnection();
-            PreparedStatement statement = con.prepareStatement("SELECT * FROM Movie LIMIT ?, ?");
-            statement.setInt(1, start);
-            statement.setInt(2, length);
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM Movie WHERE Title LIKE ? LIMIT ?, ?");
+            statement.setString(1, "%" + searchTitle + "%");
+            statement.setInt(2, start);
+            statement.setInt(3, length);
 
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {

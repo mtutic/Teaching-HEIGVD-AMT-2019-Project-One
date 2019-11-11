@@ -223,12 +223,14 @@
           type: 'POST'
         },
         columns: [{
+          searchable: false,
           data: "id",
           mData: "id"
         }, {
           data: "title",
           mData: "title"
         }, {
+          searchable: false,
           data: "year",
           mdata: "year"
         }]
