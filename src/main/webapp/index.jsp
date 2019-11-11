@@ -88,7 +88,7 @@
           <ul class="list-unstyled navbar__list">
             <li class="active has-sub">
               <a class="js-arrow" href="#">
-                <i class="fas fa-home"></i>Movies you seen</a>
+                <i class="fas fa-home"></i>Movies you've seen</a>
             </li>
             <li>
               <a href="/project-one/movies">

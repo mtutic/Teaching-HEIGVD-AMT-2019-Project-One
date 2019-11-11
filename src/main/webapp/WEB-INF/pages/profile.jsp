@@ -88,7 +88,7 @@
         <ul class="list-unstyled navbar__list">
           <li>
             <a href="/project-one/">
-              <i class="fas fa-home"></i>Movies you seen</a>
+              <i class="fas fa-home"></i>Movies you've seen</a>
           </li>
           <li>
             <a href="/project-one/movies">
@@ -176,52 +176,56 @@
           </c:if>
           <div class="row">
             <div class="col-lg-12">
-              <h2 class="title-1 m-b-25">Your profile</h2>
-              <div>
-                <form data-toggle="validator" role="form" method="post">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label class="control-label" for="lastname">Lastname</label>
-                        <input id="lastname"
-                               class="au-input au-input--full form-control"
-                               type="text"
-                               name="lastname"
-                               placeholder="Lastname"
-                               value="${user.lastName}"
-                               required>
-                        <div class="text-danger help-block with-errors"></div>
+              <div class="card">
+                <div class="card-header">
+                  Your profile
+                </div>
+                <div class="card-body card-block">
+                  <form data-toggle="validator" role="form" method="post">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="control-label" for="lastname">Lastname</label>
+                          <input id="lastname"
+                                 class="au-input au-input--full form-control"
+                                 type="text"
+                                 name="lastname"
+                                 placeholder="Lastname"
+                                 value="${user.lastName}"
+                                 required>
+                          <div class="text-danger help-block with-errors"></div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="control-label" for="firstname">Firstname</label>
+                          <input id="firstname"
+                                 class="au-input au-input--full form-control"
+                                 type="text"
+                                 name="firstname"
+                                 placeholder="Firstname"
+                                 value="${user.firstName}"
+                                 required>
+                          <div class="text-danger help-block with-errors"></div>
+                        </div>
                       </div>
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label class="control-label" for="firstname">Firstname</label>
-                        <input id="firstname"
-                               class="au-input au-input--full form-control"
-                               type="text"
-                               name="firstname"
-                               placeholder="Firstname"
-                               value="${user.firstName}"
-                               required>
-                        <div class="text-danger help-block with-errors"></div>
-                      </div>
+                    <div class="form-group">
+                      <label class="control-label" for="password">Password</label>
+                      <input id="password"
+                             class="au-input au-input--full form-control"
+                             type="password"
+                             name="password"
+                             placeholder="Password"
+                             data-minlength="5"
+                             data-error="Le mot de passe doit avoir au minimum 5 caractères"
+                             value="${user.password}"
+                             required>
+                      <div class="text-danger help-block with-errors"></div>
                     </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label" for="password">Password</label>
-                    <input id="password"
-                           class="au-input au-input--full form-control"
-                           type="password"
-                           name="password"
-                           placeholder="Password"
-                           data-minlength="5"
-                           data-error="Le mot de passe doit avoir au minimum 5 caractères"
-                           value="${user.password}"
-                           required>
-                    <div class="text-danger help-block with-errors"></div>
-                  </div>
-                  <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Save Changes</button>
-                </form>
+                    <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Save Changes</button>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
