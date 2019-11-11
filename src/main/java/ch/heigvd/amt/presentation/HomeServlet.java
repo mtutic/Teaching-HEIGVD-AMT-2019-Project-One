@@ -17,13 +17,26 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
-@WebServlet(name = "HomeServlet", urlPatterns = "")
+@WebServlet(name = "HomeServlet", urlPatterns = {"", "/delete"})
 public class HomeServlet extends HttpServlet {
     @EJB
     private IMoviesDAO moviesManager;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getServletPath();
+
+        if (action.equals("/delete")) {
+            User connectedUser = (User) req.getSession().getAttribute("user");
+            long id = Long.parseLong(req.getParameter("id"));
+
+            try {
+                moviesManager.deleteSeenMovieById(id, connectedUser.getId());
+                req.setAttribute("success", "Update successful !");
+            } catch (KeyNotFoundException e) {
+                req.setAttribute("error", e.getMessage());
+            }
+        }
         req.getRequestDispatcher("index.jsp").forward(req, resp);
     }
 

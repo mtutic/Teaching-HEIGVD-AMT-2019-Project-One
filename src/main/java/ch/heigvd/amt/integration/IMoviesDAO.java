@@ -13,5 +13,6 @@ public interface IMoviesDAO extends IDAO<String, Movie> {
     int getNumberOfMovies();
     List<Movie> findSeenMovies(User user, int start, int lenght, String searchTitle);
     int getNumberOfSeenMovies(User user);
+    void deleteSeenMovieById(long movieId, long userId) throws KeyNotFoundException;
     List<Movie> findByTitle(String title) throws KeyNotFoundException;
 }

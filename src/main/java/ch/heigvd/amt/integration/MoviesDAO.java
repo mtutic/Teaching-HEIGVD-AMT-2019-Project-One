@@ -214,6 +214,28 @@ public class MoviesDAO implements IMoviesDAO {
     }
 
     @Override
+    public void deleteSeenMovieById(long movieId, long userId) throws KeyNotFoundException {
+        Connection con = null;
+        try {
+            con = dataSource.getConnection();
+            PreparedStatement statement = con.prepareStatement("DELETE FROM User_has_seen_Movie WHERE User_idUser = ?" +
+                    " AND Movie_idMovie = ?");
+            statement.setLong(1, userId);
+            statement.setLong(2, movieId);
+
+            int numberOfDeletedSeenMovies = statement.executeUpdate();
+            if (numberOfDeletedSeenMovies != 1) {
+                throw new KeyNotFoundException("Could not delete the movie with id = " + movieId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Error(e);
+        } finally {
+            closeConnection(con);
+        }
+    }
+
+    @Override
     public void deleteById(String id) throws KeyNotFoundException {
         Connection con = null;
         try {

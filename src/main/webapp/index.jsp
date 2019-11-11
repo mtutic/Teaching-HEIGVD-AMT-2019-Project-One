@@ -158,6 +158,22 @@
       <div class="main-content">
         <div class="section__content section__content--p30">
           <div class="container-fluid">
+            <c:if test="${not empty error}">
+              <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                  ${error}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </c:if>
+            <c:if test="${not empty success}">
+              <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+                  ${success}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </c:if>
             <div class="row">
               <div class="col-lg-12">
                 <div class="card">
@@ -172,6 +188,7 @@
                             <th>movie ID</th>
                             <th>title</th>
                             <th>year</th>
+                            <th>Action</th>
                           </tr>
                         </thead>
                       </table>
@@ -239,6 +256,18 @@
           searchable: false,
           data: "year",
           mdata: "year"
+        }, {
+          data: null,
+          searchable: false,
+          render: function(data, type, row) {
+            console.log(row.id);
+            var url = '<%=request.getContextPath()%>' + "/delete?id=" + row.id;
+            return '<button ' +
+              'type="button" ' +
+              'class="btn btn-danger btn-sm" ' +
+              'style="padding: 0 5px 0 5px"' +
+              'onclick="location.href=\'' + url + '\'">delete</button>';
+          }
         }]
       });
     });
